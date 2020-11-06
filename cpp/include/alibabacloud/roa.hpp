@@ -15,81 +15,120 @@ using namespace std;
 
 namespace Alibabacloud_ROA {
 class Config : public Darabonba::Model {
-protected:
-  void _init() {
-    _default = {
-        {"accessKeyId", boost::any("")},    {"accessKeySecret", boost::any("")},
-        {"securityToken", boost::any("")},  {"protocol", boost::any("http")},
-        {"regionId", boost::any("")},       {"readTimeout", boost::any("")},
-        {"connectTimeout", boost::any("")}, {"httpProxy", boost::any("")},
-        {"httpsProxy", boost::any("")},     {"credential", boost::any("")},
-        {"endpoint", boost::any("")},       {"noProxy", boost::any("")},
-        {"userAgent", boost::any("")},      {"maxIdleConns", boost::any("")},
-        {"network", boost::any("")},        {"suffix", boost::any("")},
-        {"type", boost::any("")},
-    };
-  }
-
 public:
-  Config() { _init(); };
-  explicit Config(const std::map<string, boost::any> &config)
-      : Darabonba::Model(config) {
-    _init();
+  Config() {}
+  explicit Config(const std::map<string, boost::any> &config) : Darabonba::Model(config) {
+    fromMap(config);
   };
 
-  map<string, boost::any> toMap() {
+  void validate() override {
+    Darabonba::Model::validatePattern("regionId", regionId, "^[a-zA-Z0-9_-]+$");
+    Darabonba::Model::validatePattern("network", network, "^[a-zA-Z0-9_-]+$");
+    Darabonba::Model::validatePattern("suffix", suffix, "^[a-zA-Z0-9_-]+$");
+  }
+
+  map<string, boost::any> toMap() override {
     map<string, boost::any> res;
-    if (nullptr != accessKeyId) {
+    if (accessKeyId) {
       res["accessKeyId"] = boost::any(*accessKeyId);
     }
-    if (nullptr != accessKeySecret) {
+    if (accessKeySecret) {
       res["accessKeySecret"] = boost::any(*accessKeySecret);
     }
-    if (nullptr != securityToken) {
+    if (securityToken) {
       res["securityToken"] = boost::any(*securityToken);
     }
-    if (nullptr != protocol) {
+    if (protocol) {
       res["protocol"] = boost::any(*protocol);
     }
-    if (nullptr != regionId) {
+    if (regionId) {
       res["regionId"] = boost::any(*regionId);
     }
-    if (nullptr != readTimeout) {
+    if (readTimeout) {
       res["readTimeout"] = boost::any(*readTimeout);
     }
-    if (nullptr != connectTimeout) {
+    if (connectTimeout) {
       res["connectTimeout"] = boost::any(*connectTimeout);
     }
-    if (nullptr != httpProxy) {
+    if (httpProxy) {
       res["httpProxy"] = boost::any(*httpProxy);
     }
-    if (nullptr != httpsProxy) {
+    if (httpsProxy) {
       res["httpsProxy"] = boost::any(*httpsProxy);
     }
-    if (nullptr != credential) {
-    }
-    if (nullptr != endpoint) {
+    if (endpoint) {
       res["endpoint"] = boost::any(*endpoint);
     }
-    if (nullptr != noProxy) {
+    if (noProxy) {
       res["noProxy"] = boost::any(*noProxy);
     }
-    if (nullptr != userAgent) {
+    if (userAgent) {
       res["userAgent"] = boost::any(*userAgent);
     }
-    if (nullptr != maxIdleConns) {
+    if (maxIdleConns) {
       res["maxIdleConns"] = boost::any(*maxIdleConns);
     }
-    if (nullptr != network) {
+    if (network) {
       res["network"] = boost::any(*network);
     }
-    if (nullptr != suffix) {
+    if (suffix) {
       res["suffix"] = boost::any(*suffix);
     }
-    if (nullptr != type) {
+    if (type) {
       res["type"] = boost::any(*type);
     }
     return res;
+  }
+
+  void fromMap(map<string, boost::any> m) override {
+    if (m.find("accessKeyId") != m.end()) {
+      accessKeyId = make_shared<string>(boost::any_cast<string>(m["accessKeyId"]));
+    }
+    if (m.find("accessKeySecret") != m.end()) {
+      accessKeySecret = make_shared<string>(boost::any_cast<string>(m["accessKeySecret"]));
+    }
+    if (m.find("securityToken") != m.end()) {
+      securityToken = make_shared<string>(boost::any_cast<string>(m["securityToken"]));
+    }
+    if (m.find("protocol") != m.end()) {
+      protocol = make_shared<string>(boost::any_cast<string>(m["protocol"]));
+    }
+    if (m.find("regionId") != m.end()) {
+      regionId = make_shared<string>(boost::any_cast<string>(m["regionId"]));
+    }
+    if (m.find("readTimeout") != m.end()) {
+      readTimeout = make_shared<int>(boost::any_cast<int>(m["readTimeout"]));
+    }
+    if (m.find("connectTimeout") != m.end()) {
+      connectTimeout = make_shared<int>(boost::any_cast<int>(m["connectTimeout"]));
+    }
+    if (m.find("httpProxy") != m.end()) {
+      httpProxy = make_shared<string>(boost::any_cast<string>(m["httpProxy"]));
+    }
+    if (m.find("httpsProxy") != m.end()) {
+      httpsProxy = make_shared<string>(boost::any_cast<string>(m["httpsProxy"]));
+    }
+    if (m.find("endpoint") != m.end()) {
+      endpoint = make_shared<string>(boost::any_cast<string>(m["endpoint"]));
+    }
+    if (m.find("noProxy") != m.end()) {
+      noProxy = make_shared<string>(boost::any_cast<string>(m["noProxy"]));
+    }
+    if (m.find("userAgent") != m.end()) {
+      userAgent = make_shared<string>(boost::any_cast<string>(m["userAgent"]));
+    }
+    if (m.find("maxIdleConns") != m.end()) {
+      maxIdleConns = make_shared<int>(boost::any_cast<int>(m["maxIdleConns"]));
+    }
+    if (m.find("network") != m.end()) {
+      network = make_shared<string>(boost::any_cast<string>(m["network"]));
+    }
+    if (m.find("suffix") != m.end()) {
+      suffix = make_shared<string>(boost::any_cast<string>(m["suffix"]));
+    }
+    if (m.find("type") != m.end()) {
+      type = make_shared<string>(boost::any_cast<string>(m["type"]));
+    }
   }
 
   shared_ptr<string> accessKeyId{};
@@ -110,7 +149,7 @@ public:
   shared_ptr<string> suffix{};
   shared_ptr<string> type{};
 
-  ~Config(){};
+  ~Config() = default;
 };
 class Client {
 public:
@@ -130,35 +169,39 @@ public:
   shared_ptr<string> _regionId{};
   shared_ptr<string> _userAgent{};
   shared_ptr<Alibabacloud_Credential::Client> _credential{};
-  explicit Client(shared_ptr<Config> config);
-  map<string, boost::any>
-  doRequest(shared_ptr<string> version, shared_ptr<string> protocol,
-            shared_ptr<string> method, shared_ptr<string> authType,
-            shared_ptr<string> pathname, shared_ptr<map<string, string>> query,
-            shared_ptr<map<string, string>> headers,
-            shared_ptr<boost::any> body,
-            shared_ptr<Darabonba_Util::RuntimeOptions> runtime);
-  map<string, boost::any>
-  doRequestWithAction(shared_ptr<string> action, shared_ptr<string> version,
-                      shared_ptr<string> protocol, shared_ptr<string> method,
-                      shared_ptr<string> authType, shared_ptr<string> pathname,
-                      shared_ptr<map<string, string>> query,
-                      shared_ptr<map<string, string>> headers,
-                      shared_ptr<boost::any> body,
-                      shared_ptr<Darabonba_Util::RuntimeOptions> runtime);
-  map<string, boost::any>
-  doRequestWithForm(shared_ptr<string> version, shared_ptr<string> protocol,
-                    shared_ptr<string> method, shared_ptr<string> authType,
-                    shared_ptr<string> pathname,
-                    shared_ptr<map<string, string>> query,
-                    shared_ptr<map<string, string>> headers,
-                    shared_ptr<map<string, boost::any>> body,
-                    shared_ptr<Darabonba_Util::RuntimeOptions> runtime);
-  static boost::any defaultAny(shared_ptr<boost::any> inputValue,
-                               shared_ptr<boost::any> defaultValue);
+  explicit Client(const shared_ptr<Config>& config);
+  map<string, boost::any> doRequest(shared_ptr<string> version,
+                                    shared_ptr<string> protocol,
+                                    shared_ptr<string> method,
+                                    shared_ptr<string> authType,
+                                    shared_ptr<string> pathname,
+                                    shared_ptr<map<string, string>> query,
+                                    shared_ptr<map<string, string>> headers,
+                                    const boost::any &body,
+                                    shared_ptr<Darabonba_Util::RuntimeOptions> runtime);
+  map<string, boost::any> doRequestWithAction(shared_ptr<string> action,
+                                              shared_ptr<string> version,
+                                              shared_ptr<string> protocol,
+                                              shared_ptr<string> method,
+                                              shared_ptr<string> authType,
+                                              shared_ptr<string> pathname,
+                                              shared_ptr<map<string, string>> query,
+                                              shared_ptr<map<string, string>> headers,
+                                              const boost::any &body,
+                                              shared_ptr<Darabonba_Util::RuntimeOptions> runtime);
+  map<string, boost::any> doRequestWithForm(shared_ptr<string> version,
+                                            shared_ptr<string> protocol,
+                                            shared_ptr<string> method,
+                                            shared_ptr<string> authType,
+                                            shared_ptr<string> pathname,
+                                            shared_ptr<map<string, string>> query,
+                                            shared_ptr<map<string, string>> headers,
+                                            shared_ptr<map<string, boost::any>> body,
+                                            shared_ptr<Darabonba_Util::RuntimeOptions> runtime);
+  static boost::any defaultAny(const boost::any &inputValue, const boost::any &defaultValue);
   void checkConfig(shared_ptr<Config> config);
 
-  ~Client(){};
+  ~Client() = default;
 };
 } // namespace Alibabacloud_ROA
 
